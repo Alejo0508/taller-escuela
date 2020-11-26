@@ -115,3 +115,70 @@ clave_p2 int,
 constraint fk_fm2 foreign key (clave_m2) references materia(clave_m),
 
 constraint fk_fp2 foreign key (clave_p2) references profesor (clave_p))
+
+
+---------  procedimientos almacenados  -------------
+
+--- es ya la conexion de la base de datos con el codigo de programacion
+
+--- se crea el procedimiento con las variables
+create proc insertar_carrera2
+
+@nom_c varchar(50),
+@durac_c float
+
+as
+
+insert into carrera (nom_c, durac_c) values (@nom_c,@durac_c)
+
+--- se insertan los datos dentro de ese procedimiento
+
+exec insertar_carrera2 'derecho', 5
+
+select * from carrera
+
+--- modificar informacion
+
+create proc modificar_carrera
+
+@clave_c int,
+@nom_c varchar (50),
+@durac_c float
+
+as
+
+update carrera set nom_c = @nom_c, durac_c = @durac_c where Clave_c = 3
+
+--- procedimiento para consulta individual 
+
+create proc consultar_carrera
+
+@clave_c int
+
+as 
+
+select * from carrera where Clave_c = @clave_c
+
+
+--- modificar procedimientos almacenados
+
+alter proc consultar_carrera
+
+@clave_c int,
+@nom_c varchar (50)
+
+as 
+
+delete from carrera where Clave_c = @clave_c and nom_c = @nom_c
+
+
+--- procedimientos almacenados, parametros de salida
+--- se crea procedimiento para consultar la cantidad de alumnos
+
+create proc  consultar_cantalum
+
+@total_estudiantes int output
+
+as
+
+select @total_estudiantes = count (mat_alu) from alumno
